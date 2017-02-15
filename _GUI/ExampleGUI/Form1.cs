@@ -21,7 +21,9 @@ namespace Comms
         short magZ;
         double compass;
 
-        int distanceValue;
+        int distanceValue; //Distance to move forward/backwards (in cm)
+
+        bool penUp; //Whether pen is up or down for drawing
 
         public Form1()
         {
@@ -212,11 +214,11 @@ namespace Comms
             label10.Text = compass.ToString();
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
+        private void timer2_Tick(object sender, EventArgs e) //Constantly update readings
         {
             if (!myClient.isConnected) return;
             myClient.SendData(CommandID.GetMagnetValue);
-                        myClient.SendData(CommandID.GetAccelValue);
+            myClient.SendData(CommandID.GetAccelValue);
         }
 
         private void label10_Click(object sender, EventArgs e)
@@ -276,13 +278,10 @@ namespace Comms
         }
 
         private void groupBox4_Enter(object sender, EventArgs e)
-        {
-
-        }
+        {}
 
         private void groupBox6_Enter(object sender, EventArgs e)
-        {
-}
+        {}
 
         private void button1_Click(object sender, EventArgs e) //Go button
         {
@@ -315,11 +314,31 @@ namespace Comms
             distanceValue = int.Parse(textBox1.Text);
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void button7_Click(object sender, EventArgs e) //Move pen up/down with servo
         {
             if (!myClient.isConnected) return;
-            myClient.SendData(CommandID.PowerSwitch, new byte[] { 3 });
-            myClient.SendData(CommandID.SetServoPosition, new byte[] { 128 });
+            myClient.SendData(CommandID.PowerSwitch, new byte[] { 3 }); //Switches pen servo on
+
+            if (penUp) 
+            {
+                myClient.SendData(CommandID.SetServoPosition, new byte[] { 80 });
+                label13.Text = "Up";
+            }
+            else {
+                myClient.SendData(CommandID.SetServoPosition, new byte[] { 255 });
+                label13.Text = "Down";
+            }
+            penUp = !penUp;
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void txtIP_KeyPress(object sender, KeyPressEventArgs e)
