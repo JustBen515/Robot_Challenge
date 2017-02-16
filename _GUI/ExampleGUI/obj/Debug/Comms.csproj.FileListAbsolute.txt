@@ -91,3 +91,17 @@ C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\ExampleGUI\obj\Debug\Comms.
 C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\ExampleGUI\obj\Debug\Comms.Form1.resources
 C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\ExampleGUI\obj\Debug\Comms.Properties.Resources.resources
 C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\ExampleGUI\obj\Debug\Comms.csproj.GenerateResource.Cache
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\bin\Debug\Comms.exe.config
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.exe
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.pdb
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\bin\Debug\Comms.exe
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\bin\Debug\Comms.pdb
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\bin\Debug\CommsLib.dll
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\bin\Debug\CommsLib.pdb
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.csprojResolveAssemblyReference.cache
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.Form1.resources
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.Properties.Resources.resources
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.csproj.GenerateResource.Cache
+C:\Temp\Robot_Challenge-master\_GUI\ExampleGUI\bin\Debug\Comms.exe.config
+C:\Temp\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.exe
+C:\Temp\Robot_Challenge-master\_GUI\ExampleGUI\obj\Debug\Comms.pdb
