@@ -379,6 +379,7 @@ namespace Comms
             this.label11.Size = new System.Drawing.Size(112, 13);
             this.label11.TabIndex = 20;
             this.label11.Text = "DistanceToTravel(cm)";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // groupBox6
             // 
@@ -418,6 +419,7 @@ namespace Comms
             // 
             // timer3
             // 
+            this.timer3.Interval = 500;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
             // 
             // button7
