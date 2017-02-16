@@ -232,16 +232,16 @@ namespace Comms
         }
 
         //Move forward button
-        private void button2_Click_1(object sender, EventArgs e) 
+        private void button2_Click_1(object sender, EventArgs e)  
         {
             timer3.Enabled = true;
-            MoveForward(1000);
+            MoveForward(1000); //Arbitrary value to get it to move, can be changed
         }
 
-        public bool MoveForward(int inputTime)
+        public bool MoveForward(int inputTime) 
         {
             timer3.Interval = inputTime;
-            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 60, 0, 60, 0, 1 });
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 59, 0, 61, 0, 1 });
             //SpeedL, 0, SpeedR, 0, 1 to call closedloop
             robotIsMoving = true;
             return robotIsMoving;
@@ -309,18 +309,20 @@ namespace Comms
         {
             if (distanceValue > 0)
             {
+                timer3.Enabled = true;
                 MoveForward(distanceValue);
             }
             if (distanceValue < 0)
             {
+                timer3.Enabled = true;
                 MoveBackward(distanceValue*(-1));
             }
         }
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-            StopMoving();
             timer3.Enabled = false;
+            StopMoving();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e) //used for entering distance to travel
@@ -367,6 +369,11 @@ namespace Comms
                 file1.WriteLine(magX + "," + magY + "," + magZ + "," + ",");
                 file1.Close();
             }
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void txtIP_KeyPress(object sender, KeyPressEventArgs e)
