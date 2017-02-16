@@ -234,16 +234,34 @@ namespace Comms
         //Move forward button
         private void button2_Click_1(object sender, EventArgs e) 
         {
-            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 60, 0, 60, 0, 1 }); 
-                                                    //SpeedL, 0, SpeedR, 0, 1 to call closedloop
-            robotIsMoving = true;
+            timer3.Enabled = true;
+            MoveForward(1000);
         }
 
-        //Move down
-        private void button3_Click(object sender, EventArgs e)
+        public bool MoveForward(int inputTime)
         {
-            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 200, 0, 200, 0, 1 });
+            timer3.Interval = inputTime;
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 60, 0, 60, 0, 1 });
+            //SpeedL, 0, SpeedR, 0, 1 to call closedloop
             robotIsMoving = true;
+            return robotIsMoving;
+        }
+
+        public bool MoveBackward(int inputTime)
+        {
+            timer3.Interval = inputTime;
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 200, 0, 200, 0, 1 });
+            //SpeedL, 0, SpeedR, 0, 1 to call closedloop
+            robotIsMoving = true;
+            return robotIsMoving;
+        }
+
+        public bool StopMoving()
+        {
+
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 0, 0, 0, 0, 1 });
+            robotIsMoving = false;
+            return robotIsMoving;
         }
 
         //Move left
@@ -263,8 +281,7 @@ namespace Comms
         //Stop
         private void button6_Click(object sender, EventArgs e)
         {
-            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 0, 0, 0, 0, 1 });
-            robotIsMoving = false;
+            StopMoving();
         }
 
         private void lblPosLeft_Click(object sender, EventArgs e)
@@ -292,24 +309,18 @@ namespace Comms
         {
             if (distanceValue > 0)
             {
-                timer2.Interval = (int)(distanceValue / 22.6); //interval being desired time for movement (t=s/v)
-                timer2.Enabled = true; //timer starts when value recognised in textbox
-                myClient.SendData(CommandID.SetMotorsSpeed, new byte[] { 60, 60 }); //rover moving forwards only
+                MoveForward(distanceValue);
             }
-
             if (distanceValue < 0)
             {
-                timer2.Interval = (int)(distanceValue / 22.6); //interval being desired time for movement (t=s/v)
-                timer2.Enabled = true; //timer starts when value recognised in textbox
-                myClient.SendData(CommandID.SetMotorsSpeed, new byte[] { 200, 200 }); //rover moving backwards only
+                MoveBackward(distanceValue*(-1));
             }
         }
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-            distanceValue = 0;
-            myClient.SendData(CommandID.SetMotorsSpeed, new byte[] { 0, 0 });
-            timer2.Enabled = false;
+            StopMoving();
+            timer3.Enabled = false;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e) //used for entering distance to travel
