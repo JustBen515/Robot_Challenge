@@ -32,3 +32,8 @@ C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\CommsLib\bin\Debug\CommsLib
 C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\CommsLib\obj\Debug\CommsLib.csprojResolveAssemblyReference.cache
 C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\CommsLib\obj\Debug\CommsLib.dll
 C:\Users\mw020306\Desktop\RobotChallenge-master\_GUI\CommsLib\obj\Debug\CommsLib.pdb
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\CommsLib\bin\Debug\CommsLib.dll
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\CommsLib\bin\Debug\CommsLib.pdb
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\CommsLib\obj\Debug\CommsLib.csprojResolveAssemblyReference.cache
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\CommsLib\obj\Debug\CommsLib.dll
+E:\Memory Stick\Robot Challenge\Robot_Challenge-master\_GUI\CommsLib\obj\Debug\CommsLib.pdb

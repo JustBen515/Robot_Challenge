@@ -98,9 +98,14 @@ namespace Comms
                 magX = (short)(((int)e.RawMessage[4] << 8) | (int)e.RawMessage[5]);
                 magY = (short)(((int)e.RawMessage[6] << 8) | (int)e.RawMessage[7]);
                 magZ = (short)(((int)e.RawMessage[8] << 8) | (int)e.RawMessage[9]);
-                double magXN = magX - ((3000 + 3000) / 2);
-                double magYN = magY - ((3000 + 3000) / 2);
+                double magXN = magX - ((-931 + -1507) / 2);
+                double magYN = magY - ((2947 + 2320) / 2);
                 compass = Math.Atan2(magYN, magXN) * (180 / 3.14);
+                if(compass<0)
+                {
+                    compass = compass + 360;
+                }
+               
             }
         }
     
@@ -211,7 +216,7 @@ namespace Comms
             label7.Text = magX.ToString(); //Update magnetometer values
             label8.Text = magY.ToString();
             label9.Text = magZ.ToString();
-            label10.Text = compass.ToString();
+            label10.Text = compass.ToString("N0");
         }
 
         private void timer2_Tick(object sender, EventArgs e) //Constantly update readings
@@ -339,6 +344,18 @@ namespace Comms
         private void label13_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            int n;
+            for(n=0; n<10000; n++)
+    
+            {
+                System.IO.StreamWriter file1 = new System.IO.StreamWriter("file.txt", true);
+                file1.WriteLine(magX + "," + magY + "," + magZ + "," + ",");
+                file1.Close();
+            }
         }
 
         private void txtIP_KeyPress(object sender, KeyPressEventArgs e)
