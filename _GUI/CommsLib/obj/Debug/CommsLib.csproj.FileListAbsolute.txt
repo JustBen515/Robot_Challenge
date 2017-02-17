@@ -42,3 +42,7 @@ C:\Users\Georgina\Downloads\Robot_Challenge-master\Robot_Challenge-master\_GUI\C
 C:\Users\Georgina\Downloads\Robot_Challenge-master\Robot_Challenge-master\_GUI\CommsLib\obj\Debug\CommsLib.csprojResolveAssemblyReference.cache
 C:\Users\Georgina\Downloads\Robot_Challenge-master\Robot_Challenge-master\_GUI\CommsLib\obj\Debug\CommsLib.dll
 C:\Users\Georgina\Downloads\Robot_Challenge-master\Robot_Challenge-master\_GUI\CommsLib\obj\Debug\CommsLib.pdb
+N:\My Documents\Robot_Challenge\_GUI\CommsLib\bin\Debug\CommsLib.dll
+N:\My Documents\Robot_Challenge\_GUI\CommsLib\bin\Debug\CommsLib.pdb
+N:\My Documents\Robot_Challenge\_GUI\CommsLib\obj\Debug\CommsLib.dll
+N:\My Documents\Robot_Challenge\_GUI\CommsLib\obj\Debug\CommsLib.pdb

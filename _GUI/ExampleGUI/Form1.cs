@@ -243,6 +243,7 @@ namespace Comms
             timer3.Interval = inputTime;
             myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 59, 0, 61, 0, 1 });
             //SpeedL, 0, SpeedR, 0, 1 to call closedloop
+            timer3.Enabled = true;
             robotIsMoving = true;
             return robotIsMoving;
         }
@@ -252,6 +253,7 @@ namespace Comms
             timer3.Interval = inputTime;
             myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 200, 0, 200, 0, 1 });
             //SpeedL, 0, SpeedR, 0, 1 to call closedloop
+            timer3.Enabled = true;
             robotIsMoving = true;
             return robotIsMoving;
         }
@@ -307,15 +309,36 @@ namespace Comms
 
         private void button1_Click(object sender, EventArgs e) //Go button
         {
-            if (distanceValue > 0)
+            if (distanceValue > 0)                             //for forwards
             {
-                timer3.Enabled = true;
-                MoveForward(distanceValue);
+                int time = 0;
+                int time2 = 0;
+                float dist = 0;
+                if (distanceValue > 7)                         //initial 7 cm is weird
+                {
+                    distanceValue = distanceValue - 7;  
+                    time = 500;                                 //the initial 7 cm takes 500ms
+                    dist = distanceValue;                       //make remaining distance a float for division
+                    time2 = (int)((dist / 12) * 500);           //get the remaining time working, moves 12cm in 500ms
+                    time = time + time2;                        
+                }
+                MoveForward(time);                              //calls move fowrward function, for the time needed
             }
             if (distanceValue < 0)
             {
-                timer3.Enabled = true;
-                MoveBackward(distanceValue*(-1));
+                distanceValue = Math.Abs(distanceValue);        //needs calibrating but the same principle as before
+                int time = 0;
+                int time2 = 0;
+                float dist = 0;
+                if (distanceValue > 7)
+                {
+                    distanceValue = distanceValue - 7;
+                    time = 500;
+                    dist = distanceValue;
+                    time2 = (int)((dist / 12) * 500);
+                    time = time + time2;
+                }
+                MoveBackward(time);
             }
         }
 
