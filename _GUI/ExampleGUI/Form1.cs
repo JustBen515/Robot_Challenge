@@ -21,6 +21,10 @@ namespace Comms
         short magZ;
         double compass;
 
+        double startingAngle;
+        double newAngle; //Angle we wish to move it by total
+        double requestedAngle; //Input from text box
+
         int distanceValue; //Distance to move forward/backwards (in cm)
 
         bool penUp; //Whether pen is up or down for drawing
@@ -209,13 +213,13 @@ namespace Comms
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            label4.Text = accX.ToString(); //Update accelerometer values
-            label5.Text = accY.ToString();
-            label6.Text = accZ.ToString();
+            //label4.Text = accX.ToString(); //Update accelerometer values
+            //label5.Text = accY.ToString();
+            //label6.Text = accZ.ToString();
 
             label7.Text = magX.ToString(); //Update magnetometer values
             label8.Text = magY.ToString();
-            label9.Text = magZ.ToString();
+            //label9.Text = magZ.ToString();
             label10.Text = compass.ToString("N0");
         }
 
@@ -256,6 +260,18 @@ namespace Comms
             timer3.Enabled = true;
             robotIsMoving = true;
             return robotIsMoving;
+        }
+
+        public void MoveLeft()
+        {
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 200, 0, 50, 0, 1 });
+            robotIsMoving = true;
+        }
+
+        public void MoveRight()
+        {
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 50, 0, 200, 0, 1 });
+            robotIsMoving = true;
         }
 
         public bool StopMoving()
@@ -386,7 +402,6 @@ namespace Comms
         {
             int n;
             for(n=0; n<10000; n++)
-    
             {
                 System.IO.StreamWriter file1 = new System.IO.StreamWriter("file.txt", true);
                 file1.WriteLine(magX + "," + magY + "," + magZ + "," + ",");
@@ -397,6 +412,51 @@ namespace Comms
         private void label11_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            // converting the text from the textbox to an int
+            requestedAngle = Convert.ToDouble(textBox2.Text);
+            requestedAngle = Double.Parse(textBox2.Text);
+        }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+            if (compass < (newAngle - 5)) //Use newAngle in here
+            {
+                MoveRight();
+            }
+            else if (compass > (newAngle + 5))
+            {
+                MoveLeft();
+            }
+            else
+            {
+                label14.Text = "Finished rotation";
+                timer4.Enabled = false;
+                StopMoving();
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            timer4.Enabled = true;
+            startingAngle = compass;
+            newAngle = 90 + startingAngle; //Change 90 to take value from text box
+            if (newAngle > 360)
+            {
+                newAngle -= 360;
+            }
+            if (newAngle < -360)
+            {
+                newAngle += 360;
+            }
         }
 
         private void txtIP_KeyPress(object sender, KeyPressEventArgs e)
