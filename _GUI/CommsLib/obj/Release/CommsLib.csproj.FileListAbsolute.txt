@@ -1,0 +1,4 @@
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\CommsLib\bin\Release\CommsLib.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\CommsLib\bin\Release\CommsLib.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\CommsLib\obj\Release\CommsLib.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\CommsLib\obj\Release\CommsLib.pdb

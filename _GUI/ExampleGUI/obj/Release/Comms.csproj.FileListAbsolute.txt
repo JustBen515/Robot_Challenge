@@ -1,0 +1,11 @@
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\bin\Release\Comms.exe.config
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\bin\Release\Comms.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\bin\Release\Comms.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\bin\Release\CommsLib.dll
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\bin\Release\CommsLib.pdb
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\obj\Release\Comms.csprojResolveAssemblyReference.cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\obj\Release\Comms.Form1.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\obj\Release\Comms.Properties.Resources.resources
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\obj\Release\Comms.csproj.GenerateResource.Cache
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\obj\Release\Comms.exe
+C:\Users\User\Documents\Visual Studio 2015\Projects\_GUI\ExampleGUI\obj\Release\Comms.pdb
