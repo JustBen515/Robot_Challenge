@@ -21,9 +21,23 @@ namespace Comms
         short magZ;
         double compass;
 
+        double startingAngle;
+        double newAngle; //Angle we wish to move it by total
+        double requestedAngle; //Input from text box
+        bool clockwise = true;
+
         int distanceValue; //Distance to move forward/backwards (in cm)
 
         bool penUp; //Whether pen is up or down for drawing
+
+        int listPointer = -1;
+        public List<procedurePair> procedureList = new List<procedurePair>();
+        public int sideA = (int)((23 / 12) * 500) + 500;           //sides converted to a time
+        public int sideB = (int)((33 / 12) * 500) + 500;
+        public int sideC = (int)((43 / 12) * 500) + 500;
+        public double angle1 = 180 - 90;                                 //angles of the turn required
+        public double angle2 = 180 - 36.87;
+        public double angle3 = 180 - 53.13;
 
         public Form1()
         {
@@ -209,13 +223,13 @@ namespace Comms
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            label4.Text = accX.ToString(); //Update accelerometer values
-            label5.Text = accY.ToString();
-            label6.Text = accZ.ToString();
+            //label4.Text = accX.ToString(); //Update accelerometer values
+            //label5.Text = accY.ToString();
+            //label6.Text = accZ.ToString();
 
             label7.Text = magX.ToString(); //Update magnetometer values
             label8.Text = magY.ToString();
-            label9.Text = magZ.ToString();
+            //label9.Text = magZ.ToString();
             label10.Text = compass.ToString("N0");
         }
 
@@ -258,6 +272,18 @@ namespace Comms
             return robotIsMoving;
         }
 
+        public void MoveLeft()
+        {
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 252, 0, 3, 0, 1 });
+            robotIsMoving = true;
+        }
+
+        public void MoveRight()
+        {
+            myClient.SendData(CommandID.MotorSpeedClosed, new byte[] { 3, 0, 252, 0, 1 });
+            robotIsMoving = true;
+        }
+
         public bool StopMoving()
         {
 
@@ -284,6 +310,7 @@ namespace Comms
         private void button6_Click(object sender, EventArgs e)
         {
             StopMoving();
+            timer4.Enabled = false;
         }
 
         private void lblPosLeft_Click(object sender, EventArgs e)
@@ -294,6 +321,110 @@ namespace Comms
         private void Form1_Load(object sender, EventArgs e)
         {
 
+            penDOWN();
+            MoveForward(sideA);
+            penUP();
+            checkAndTurn(angle1);
+            penDOWN();
+            MoveForward(sideB);
+            penUP();
+            checkAndTurn(angle2);
+            penDOWN();
+            MoveForward(sideC);
+            penUP();
+            checkAndTurn(angle3);
+
+            
+
+            var PenUP = new procedurePair();
+            PenUP.index = 1;
+            PenUP.procedure = "PenUP";
+            PenUP.paramiters = 0;
+
+            var PenDOWN = new procedurePair();
+
+            PenDOWN.procedure = "PenDOWN";
+            PenDOWN.paramiters = 0;
+            
+            var Move1 = new procedurePair();
+            Move1.procedure = "Move1";
+            Move1.paramiters = sideA;
+
+            var Move2 = new procedurePair();
+            Move2.procedure = "Move2";
+            Move2.paramiters = sideB;
+
+            var Move3 = new procedurePair();
+            Move3.procedure = "Move3";
+            Move3.paramiters = sideC;
+
+            var Turn1 = new procedurePair();
+            Turn1.procedure = "Turn1";
+            Turn1.paramiters = angle1;
+
+            var Turn2 = new procedurePair();
+            Turn2.procedure = "Turn2";
+            Turn2.paramiters = angle2;
+
+            var Turn3 = new procedurePair();
+            Turn3.procedure = "Turn3";
+            Turn3.paramiters = angle3;
+
+            procedureList.Add(PenDOWN);
+            procedureList.Add(Move1);
+            procedureList.Add(PenUP);
+            procedureList.Add(Turn1);
+            procedureList.Add(PenDOWN);
+            procedureList.Add(Move2);
+            procedureList.Add(PenUP);
+            procedureList.Add(Turn2);
+            procedureList.Add(PenDOWN);
+            procedureList.Add(Move3);
+            procedureList.Add(PenUP);
+            procedureList.Add(Turn3);
+
+            
+
+        }
+
+        private void button8_Click_1(object sender, EventArgs e) //Draw triangle button
+        {
+            if (listPointer > 12)
+            {
+
+                listPointer++;
+                String procedureItem = procedureList[listPointer].procedure;
+                switch (procedureItem)
+                {
+                    case "PenUP":
+                        penUP();
+                        break;
+                    case "PenDOWN":
+                        penDOWN();
+                        break;
+                    case "Move1":
+                        MoveForward(Convert.ToInt32(procedureList[listPointer].paramiters));
+                        break;
+                    case "Move2":
+                        MoveForward(Convert.ToInt32(procedureList[listPointer].paramiters));
+                        break;
+                    case "Move3":
+                        MoveForward(Convert.ToInt32(procedureList[listPointer].paramiters));
+                        break;
+                    case "Turn1":
+                        newAngle = angle1;
+                        timer4.Enabled = true;
+                        break;
+                    case "Turn2":
+                        newAngle = angle2;
+                        timer4.Enabled = true;
+                        break;
+                    case "Turn3":
+                        newAngle = angle3;
+                        timer4.Enabled = false;
+                        break;
+                }
+            }
         }
 
         private void label10_Click_1(object sender, EventArgs e)
@@ -309,17 +440,20 @@ namespace Comms
 
         private void button1_Click(object sender, EventArgs e) //Go button
         {
+            distanceValue = Convert.ToInt32(textBox1.Text);
+            distanceValue = int.Parse(textBox1.Text);
+
             if (distanceValue > 0)                             //for forwards
             {
                 int time = 0;
                 int time2 = 0;
                 float dist = 0;
-                if (distanceValue > 7)                         //initial 7 cm is weird
+                if (distanceValue > 8)                         //initial 7 cm is weird
                 {
-                    distanceValue = distanceValue - 7;  
+                    distanceValue = distanceValue - 8;  
                     time = 500;                                 //the initial 7 cm takes 500ms
                     dist = distanceValue;                       //make remaining distance a float for division
-                    time2 = (int)((dist / 12) * 500);           //get the remaining time working, moves 12cm in 500ms
+                    time2 = (int)((dist / 15) * 500);           //get the remaining time working, moves 12cm in 500ms
                     time = time + time2;                        
                 }
                 MoveForward(time);                              //calls move fowrward function, for the time needed
@@ -330,12 +464,12 @@ namespace Comms
                 int time = 0;
                 int time2 = 0;
                 float dist = 0;
-                if (distanceValue > 7)
+                if (distanceValue > 0)
                 {
-                    distanceValue = distanceValue - 7;
+                    distanceValue = distanceValue - 0s;
                     time = 500;
                     dist = distanceValue;
-                    time2 = (int)((dist / 12) * 500);
+                    time2 = (int)((dist / 17) * 500);
                     time = time + time2;
                 }
                 MoveBackward(time);
@@ -351,10 +485,8 @@ namespace Comms
         private void textBox1_TextChanged(object sender, EventArgs e) //used for entering distance to travel
         {
             // converting the text from the textbox to an int
-            distanceValue = Convert.ToInt32(textBox1.Text);
-            distanceValue = int.Parse(textBox1.Text);
-        }
 
+        }
         private void button7_Click(object sender, EventArgs e) //Move pen up/down with servo
         {
             if (!myClient.isConnected) return;
@@ -362,11 +494,11 @@ namespace Comms
 
             if (penUp) 
             {
-                myClient.SendData(CommandID.SetServoPosition, new byte[] { 80 });
+                penUP();
                 label13.Text = "Up";
             }
             else {
-                myClient.SendData(CommandID.SetServoPosition, new byte[] { 255 });
+                penDOWN();
                 label13.Text = "Down";
             }
             penUp = !penUp;
@@ -386,7 +518,6 @@ namespace Comms
         {
             int n;
             for(n=0; n<10000; n++)
-    
             {
                 System.IO.StreamWriter file1 = new System.IO.StreamWriter("file.txt", true);
                 file1.WriteLine(magX + "," + magY + "," + magZ + "," + ",");
@@ -399,6 +530,100 @@ namespace Comms
 
         }
 
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            // converting the text from the textbox to an int
+            //requestedAngle = Convert.ToDouble(textBox2.Text);
+            //requestedAngle = Double.Parse(textBox2.Text);
+        }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+            checkAndTurn(newAngle);
+        }
+
+        private void checkAndTurn(double inputAngle)
+        {
+            if (clockwise)
+            {
+                if (compass > (inputAngle + 5))
+                {
+                    MoveRight();
+                }
+                if (compass < (inputAngle - 5)) //Use newAngle in here
+                {
+                    MoveRight();
+                }
+                else
+                {
+                    label14.Text = "Finished rotation";
+                    timer4.Enabled = false;
+                    StopMoving();
+                }
+            }
+            else if (!clockwise)
+            {
+                if (compass < (inputAngle - 5)) //Use newAngle in here
+                {
+                    MoveLeft();
+                }
+                if (compass > (inputAngle + 5))
+                {
+                    MoveLeft();
+                }
+                else
+                {
+                    label14.Text = "Finished rotation";
+                    timer4.Enabled = false;
+                    StopMoving();
+                }
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e) //angle Go button
+        {
+            startingAngle = compass;
+            newAngle = Convert.ToDouble(textBox2.Text) + startingAngle; //takes in the value
+            if (newAngle > 360)
+            {
+                newAngle -= 360;
+            }
+            if (newAngle < 0)
+            {
+                newAngle += 360;
+            }
+            //newAngle = newAngle * 0.95;
+            timer4.Enabled = true;
+        }
+
+        private void penUP()
+        {
+            if (!myClient.isConnected) return;
+            myClient.SendData(CommandID.PowerSwitch, new byte[] { 3 }); //Switches pen servo on
+            myClient.SendData(CommandID.SetServoPosition, new byte[] { 80 });
+        }
+        private void penDOWN()
+        {
+            if (!myClient.isConnected) return;
+            myClient.SendData(CommandID.PowerSwitch, new byte[] { 3 }); //Switches pen servo on
+            myClient.SendData(CommandID.SetServoPosition, new byte[] { 225 });
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            clockwise = true;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            clockwise = false;
+        }
+
         private void txtIP_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
@@ -407,5 +632,13 @@ namespace Comms
                 btnToggleGreen.Focus();
             }
         }
+        
+    }
+    public class procedurePair
+    {
+        public int index;
+        public String procedure;
+        public double paramiters;
+
     }
 }
